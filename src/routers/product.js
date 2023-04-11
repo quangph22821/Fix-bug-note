@@ -1,20 +1,19 @@
 import express from "express";
 import {
+  create,
   getAll,
   getDetail,
-  create,
-  // updatePatch,
   update,
   remove,
 } from "../controllers/product.js";
+import { checkPermission } from "../middlewares/checkPermission.js";
 
 const router = express.Router();
 
-router.get("/products", getAll);
-router.get("/products/:id", getDetail);
-router.post("/products", create);
-// router.patch("/products/:id", updatePatch);
-router.put("/products/:id", update);
-router.delete("/products/:id", remove);
+router.get("/", getAll);
+router.get("/:id", getDetail);
+router.post("/",  create);
+router.put("/:id",  update);
+router.delete("/:id",  remove);
 
 export default router;

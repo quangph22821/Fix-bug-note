@@ -1,25 +1,28 @@
-import express from "express"
-import router from "./routers/product.js";
-import routerAuth from "./routers/auth.js";
-import dotenv from "dotenv";
+import express from "express";
+import router from "./routers/index";
 import mongoose from "mongoose";
+import cors from "cors"
+import dotenv from "dotenv";
 
-dotenv.config()
+dotenv.config();
 const app = express();
 
+app.use(express.json());
+
+mongoose.connect(`${process.env.URI_DB}`);
+
+// app.use("/api", routerProduct);
+// app.use("/api", routerAuth);
+app.use(cors())
+app.use("/api", router);
 
 
-app.use(express.json())
 
+export const viteNodeApp = app;
 
 // app.listen(process.env.PORT, () => {
-//     console.log(`App running on http://localhost:${process.env.PORT}`);
+//   console.log(`Server is running on ${process.env.PORT}`);
 // });
-mongoose.connect(`${process.env.URI_DB}`)
-
-app.use("/api", router);
-app.use("/api",routerAuth);
-export const viteNodeApp = app;
 
 // Step 1: tạo file db.json
 // Step 2: cài đặt json-server.
@@ -28,3 +31,10 @@ export const viteNodeApp = app;
 // Step 5: install axios
 // Step 6: Code getlist, getdetails
 
+// Config dotenv
+// Step 1: install
+// Step 2: import and config
+// Step 3: import { mongoose } from 'mongoose';
+// create .env file
+// Step 4: use process.env.TEN_BIEN
+// Step 5: gitignore
