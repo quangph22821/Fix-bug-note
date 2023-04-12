@@ -1,11 +1,8 @@
-import Joi from "joi";
-import Products from "../models/product.js";
 
-const productSchema = Joi.object({
-  name: Joi.string().required().min(3),
-  price: Joi.number().required(),
-  description: Joi.string(),
-});
+import Products from "../models/product.js";
+import { productSchema } from "../schemas/products.js";
+
+
 export const getAll = async (req, res) => {
   try {
     // const { data: products } = await axios.get(
@@ -40,6 +37,12 @@ export const getDetail = async (req, res) => {
 
 export const create = async (req, res) => {
   try {
+    const { error } = productSchema.validate(req.body);
+    if (error) {
+      return res.status(400).json({
+        message: error.details[0].message,
+      });
+    }
     // const { data: product } = await axios.post(`${API_URI}`, req.body);
     const product = await Products.create(req.body);
     if (!product) {
@@ -69,12 +72,14 @@ export const remove = async (req, res) => {
 };
 
 export const update = async (req, res) => {
+  
   try {
-    // const { data: product } = await axios.put(
-    //   `${API_URI}${req.params.id}`,
-    //   req.body
-    // );q
-
+    const { error } = productSchema.validate(req.body);
+    if (error) {
+      return res.status(400).json({
+        message: error.details[0].message,
+      });
+    }
     const product = await Products.findByIdAndUpdate(req.params.id, req.body);
     if (!product) {
       res.send({
